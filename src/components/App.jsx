@@ -1,8 +1,7 @@
 // import viteLogo from '/vite.svg'
-import '../styles/App.scss'
+import "../styles/App.scss";
 
 function App() {
-  
   return (
     <div className="page">
       <header>
@@ -36,7 +35,9 @@ function App() {
             </ul>
           </div>
           <form className="form">
-            <label className="title" htmlFor="last-letter">Escribe una letra:</label>
+            <label className="title" htmlFor="last-letter">
+              Escribe una letra:
+            </label>
             <input
               autocomplete="off"
               className="form__input"
@@ -63,8 +64,8 @@ function App() {
           <span className="error-1 line"></span>
         </section>
       </main>
-    </div>     
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
