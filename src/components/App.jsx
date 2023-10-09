@@ -1,5 +1,6 @@
 // import viteLogo from '/vite.svg'
 import "../styles/App.scss";
+import "../fonts/KgTenThousandReasons-R1ll.ttf"
 
 function App() {
   return (
@@ -39,9 +40,9 @@ function App() {
               Escribe una letra:
             </label>
             <input
-              autocomplete="off"
+              autoComplete="off"
               className="form__input"
-              maxlength="1"
+              maxLength="1"
               type="text"
               name="last-letter"
               id="last-letter"
