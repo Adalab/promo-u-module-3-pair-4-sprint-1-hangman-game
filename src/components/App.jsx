@@ -12,10 +12,17 @@ function App() {
   const handleLetter = (ev) => {
     ev.preventDefault ();
     const letterPress = ev.key;
-    const regex = /^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/;
-    //condicional https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+    const regex = /^[a-z]+$/;
+    if(regex.test(letterPress)){
     setLastLetter(letterPress);
+    } else if (letterPress === 'Backspace' || letterPress === ' ' || letterPress === 'Enter') {
+     setLastLetter(''); 
+    }
   }
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+  }
+
   return (
     <div className="page">
       <header>
@@ -48,7 +55,7 @@ function App() {
               <li className="letter">x</li>
             </ul>
           </div>
-          <form className="form">
+          <form onSubmit={handleSubmit} className="form">
             <label className="title" htmlFor="last-letter">
               Escribe una letra:
             </label>
@@ -79,7 +86,7 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
-        <button className="btn" onClick= {handleClick} >Incrementar</button>
+        <button className="btn" onClick={handleClick}>Incrementar</button>
       </main>
     </div>
   );
