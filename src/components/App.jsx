@@ -5,9 +5,16 @@ import { useState } from "react";
 
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState (0);
+  const [lastLetter, setLastLetter] = useState ('');
   const handleClick = () => {
     setNumberOfErrors (numberOfErrors + 1);
-    console.log(numberOfErrors);
+  }
+  const handleLetter = (ev) => {
+    ev.preventDefault ();
+    const letterPress = ev.key;
+    const regex = /^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/;
+    //condicional https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+    setLastLetter(letterPress);
   }
   return (
     <div className="page">
@@ -52,6 +59,8 @@ function App() {
               type="text"
               name="last-letter"
               id="last-letter"
+              value = {lastLetter}
+              onKeyUp={handleLetter}
             />
           </form>
         </section>
