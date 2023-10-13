@@ -8,7 +8,7 @@ function App() {
   const [lastLetter, setLastLetter] = useState("");
   const [word, setWord] = useState("pepino");
   const [userLetters, setUserLetters] = useState([]);
-
+    let failedLetters = [];
 
   const handleClick = () => {
     setNumberOfErrors(numberOfErrors + 1);
@@ -16,12 +16,15 @@ function App() {
 
   const handleLetter = (ev) => {
     ev.preventDefault();
-    const letterPress = ev.key;
+    const letterPress = ev.target.value;
     const regex = /^[a-z]+$/; 
     
-    if (regex.test(letterPress)) {
+    if (regex.test(letterPress) || letterPress === '') {
       setLastLetter(letterPress);
-      
+      if (letterPress !=='') {
+         setUserLetters([...userLetters, letterPress]);
+      }
+     
     } else if (
       letterPress === "Backspace" ||
       letterPress === " " ||
@@ -29,45 +32,25 @@ function App() {
     ) {
       setLastLetter("");
     }
-    setUserLetters([...userLetters, letterPress]);
-      console.log(userLetters);
+    
   };
-
-
   const handleSubmit = (ev) => {
     ev.preventDefault();
   };
-
-  
   const renderSolutionLetters = () => {
     const wordLetters = word.split("");
+    console.log(wordLetters);
     return wordLetters.map((eachLetter, index) => {
-      return <li key={index} className="letter"></li>;
+      return <li key={index} className="letter">{userLetters.includes(eachLetter) ? eachLetter : ''}</li>;
     });
   };
-
-  // function dividirCadena(cadenaADividir, separador) {
-  //   var arrayDeCadenas = cadenaADividir.split(separador);
-  //   document.write('<p>La cadena original es: "' + cadenaADividir + '"');
-  //   document.write('<br>El separador es: "' + separador + '"');
-  //   document.write(
-  //     "<br>El array tiene " + arrayDeCadenas.length + " elementos: ",
-  //   );
-
-  //   for (var i = 0; i < arrayDeCadenas.length; i++) {
-  //     document.write(arrayDeCadenas[i] + " / ");
-  //   }
-  // }
-
-  // var cadenaVerso = "Oh brave new world that has such people in it.";
-  // var cadenaMeses = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec";
-
-  // var espacio = " ";
-  // var coma = ",";
-
-  // dividirCadena(cadenaVerso, espacio);
-  // dividirCadena(cadenaVerso);
-  // dividirCadena(cadenaMeses, coma);
+  const renderErrorLetters = () => {
+    failedLetter = !word.includes(eachLetter);
+    return userLetters
+    .filter((eachLetter) => word.includes(eachLetter) ? '' : eachLetter)    
+    .map((eachLetter, index)=> (
+      <li key={index} className="letter">{eachLetter}</li>
+    ))};
 
   return (
     <div className="page">
@@ -80,26 +63,12 @@ function App() {
             <h2 className="title">Solución:</h2>
             <ul className="letters">
               {renderSolutionLetters()}
-              {/* <li className="letter">k</li>
-              <li className="letter">a</li>
-              <li className="letter"></li>
-              <li className="letter">a</li>
-              <li className="letter">k</li>
-              <li className="letter">r</li>
-              <li className="letter"></li>
-              <li className="letter">k</li>
-              <li className="letter">e</li>
-              <li className="letter">r</li> */}
             </ul>
           </div>
           <div className="error">
             <h2 className="title">Letras falladas:</h2>
             <ul className="letters">
-              <li className="letter">f</li>
-              <li className="letter">q</li>
-              <li className="letter">h</li>
-              <li className="letter">p</li>
-              <li className="letter">x</li>
+              {renderErrorLetters()}
             </ul>
           </div>
           <form onSubmit={handleSubmit} className="form">
