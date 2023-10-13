@@ -1,30 +1,36 @@
 // import viteLogo from '/vite.svg'
 import "../styles/App.scss";
 import "../fonts/KgTenThousandReasons-R1ll.ttf";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState("");
-  const [word, setWord] = useState("pepino");
+  const [word, setWord] = useState("");
   const [userLetters, setUserLetters] = useState([]);
-    let failedLetters = [];
 
-  const handleClick = () => {
-    setNumberOfErrors(numberOfErrors + 1);
-  };
+  const failedLetters = userLetters.filter((letter) => !word.includes(letter));
+  console.log(failedLetters);
+  const numberOfErrors = failedLetters.length;
+
+  useEffect(() => {
+    // Dentro de useEffect llamamos a la API
+    fetch("https://dev.adalab.es/api/random/word") // El 5 es el id de la Princesa Leia
+      .then((response) => response.json())
+      .then((Data) => {
+        // Cuando la API responde guardamos los datos en el estado para que se vuelva a renderizar el componente
+        setWord(Data.word);
+      });
+  }, []);
 
   const handleLetter = (ev) => {
     ev.preventDefault();
     const letterPress = ev.target.value;
-    const regex = /^[a-z]+$/; 
-    
-    if (regex.test(letterPress) || letterPress === '') {
+    const regex = /^[a-z]+$/;
+    if (regex.test(letterPress) || letterPress === "") {
       setLastLetter(letterPress);
-      if (letterPress !=='') {
-         setUserLetters([...userLetters, letterPress]);
+      if (letterPress !== "") {
+        setUserLetters([...userLetters, letterPress]);
       }
-     
     } else if (
       letterPress === "Backspace" ||
       letterPress === " " ||
@@ -32,25 +38,35 @@ function App() {
     ) {
       setLastLetter("");
     }
-    
   };
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
   };
+
   const renderSolutionLetters = () => {
     const wordLetters = word.split("");
-    console.log(wordLetters);
     return wordLetters.map((eachLetter, index) => {
-      return <li key={index} className="letter">{userLetters.includes(eachLetter) ? eachLetter : ''}</li>;
+      return (
+        <li key={index} className="letter">
+          {userLetters.includes(eachLetter) ? eachLetter : ""}
+        </li>
+      );
     });
   };
+
+ 
+
   const renderErrorLetters = () => {
-    failedLetter = !word.includes(eachLetter);
+    //
     return userLetters
-    .filter((eachLetter) => word.includes(eachLetter) ? '' : eachLetter)    
-    .map((eachLetter, index)=> (
-      <li key={index} className="letter">{eachLetter}</li>
-    ))};
+      .filter((eachLetter) => (word.includes(eachLetter) ? "" : eachLetter))
+      .map((eachLetter, index) => (
+        <li key={index} className="letter">
+          {eachLetter}
+        </li>
+      ));
+  };
 
   return (
     <div className="page">
@@ -61,15 +77,11 @@ function App() {
         <section>
           <div className="solution">
             <h2 className="title">Solución:</h2>
-            <ul className="letters">
-              {renderSolutionLetters()}
-            </ul>
+            <ul className="letters">{renderSolutionLetters()}</ul>
           </div>
           <div className="error">
             <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">
-              {renderErrorLetters()}
-            </ul>
+            <ul className="letters">{renderErrorLetters()}</ul>
           </div>
           <form onSubmit={handleSubmit} className="form">
             <label className="title" htmlFor="last-letter">
@@ -102,9 +114,6 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
-        <button className="btn" onClick={handleClick}>
-          Incrementar
-        </button>
       </main>
     </div>
   );
