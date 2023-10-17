@@ -2,6 +2,10 @@
 import "../styles/App.scss";
 import "../fonts/KgTenThousandReasons-R1ll.ttf";
 import { useEffect, useState } from "react";
+import Header from "./Header";
+import Dummy from "./Dummy";
+import SolutionLetters from "./SolutionLetters";
+import ErrorLetters from "./ErrorLetters ";
 
 function App() {
   const [lastLetter, setLastLetter] = useState("");
@@ -44,45 +48,19 @@ function App() {
     ev.preventDefault();
   };
 
-  const renderSolutionLetters = () => {
-    const wordLetters = word.split("");
-    return wordLetters.map((eachLetter, index) => {
-      return (
-        <li key={index} className="letter">
-          {userLetters.includes(eachLetter) ? eachLetter : ""}
-        </li>
-      );
-    });
-  };
+  
 
  
 
-  const renderErrorLetters = () => {
-    //
-    return userLetters
-      .filter((eachLetter) => (word.includes(eachLetter) ? "" : eachLetter))
-      .map((eachLetter, index) => (
-        <li key={index} className="letter">
-          {eachLetter}
-        </li>
-      ));
-  };
+  
 
   return (
     <div className="page">
-      <header>
-        <h1 className="header__title">Juego del ahorcado</h1>
-      </header>
+      <Header/>
       <main className="main">
         <section>
-          <div className="solution">
-            <h2 className="title">Solución:</h2>
-            <ul className="letters">{renderSolutionLetters()}</ul>
-          </div>
-          <div className="error">
-            <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">{renderErrorLetters()}</ul>
-          </div>
+          <SolutionLetters word={word} userLetters={userLetters}/>
+          <ErrorLetters word={word} userLetters={userLetters}/>
           <form onSubmit={handleSubmit} className="form">
             <label className="title" htmlFor="last-letter">
               Escribe una letra:
@@ -99,21 +77,7 @@ function App() {
             />
           </form>
         </section>
-        <section className={`dummy error-${numberOfErrors}`}>
-          <span className="error-13 eye"></span>
-          <span className="error-12 eye"></span>
-          <span className="error-11 line"></span>
-          <span className="error-10 line"></span>
-          <span className="error-9 line"></span>
-          <span className="error-8 line"></span>
-          <span className="error-7 line"></span>
-          <span className="error-6 head"></span>
-          <span className="error-5 line"></span>
-          <span className="error-4 line"></span>
-          <span className="error-3 line"></span>
-          <span className="error-2 line"></span>
-          <span className="error-1 line"></span>
-        </section>
+        <Dummy numberOfErrors= {numberOfErrors}/>
       </main>
     </div>
   );
